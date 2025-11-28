@@ -7,6 +7,7 @@
       name="description"
       content="BRINCAPARK - Centro de entretenimiento familiar con parques de inflables"
     />
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png" />
     <title>BRINCAPARK - Diversión para Toda la Familia</title>
 
     <!-- CSS -->
@@ -111,7 +112,7 @@
         <div class="tickets-grid">
           <div class="ticket-card">
             <div class="ticket-time">15MIN</div>
-            <div class="ticket-price">$6</div>
+            <div class="ticket-price" id="precio-15min">$6</div>
             <ul class="ticket-features">
               <li>• Acceso a las atracciones dentro del parque</li>
               <li>• 1 Acompañante</li>
@@ -120,7 +121,7 @@
 
           <div class="ticket-card">
             <div class="ticket-time">30MIN</div>
-            <div class="ticket-price">$9</div>
+            <div class="ticket-price" id="precio-30min">$9</div>
             <ul class="ticket-features">
               <li>• Acceso a las atracciones dentro del parque</li>
               <li>• 1 Acompañante</li>
@@ -129,7 +130,7 @@
 
           <div class="ticket-card">
             <div class="ticket-time">60MIN</div>
-            <div class="ticket-price">$10</div>
+            <div class="ticket-price" id="precio-60min">$10</div>
             <ul class="ticket-features">
               <li>• Acceso a las atracciones dentro del parque</li>
               <li>• 1 Acompañante</li>
@@ -145,7 +146,7 @@
         <div class="tickets-grid" style="max-width: 800px; margin: 0 auto">
           <div class="ticket-card">
             <div class="ticket-time">FULL DAY</div>
-            <div class="ticket-price">$11</div>
+            <div class="ticket-price" id="precio-fullday">$11</div>
             <ul class="ticket-features">
               <li>
                 • Acceso a todas las atracciones dentro del parque por tiempo
@@ -157,7 +158,7 @@
 
           <div class="ticket-card">
             <div class="ticket-time">COMBO FULLDAY</div>
-            <div class="ticket-price">$13</div>
+            <div class="ticket-price" id="precio-combo">$13</div>
             <ul class="ticket-features">
               <li>
                 • Acceso a las atracciones de BrincaPark por timpo ilimitado
@@ -217,11 +218,11 @@
               <div class="paquete-footer">
                 <div class="paquete-price">
                   <div class="paquete-price-label">Lunes a Jueves</div>
-                  <div class="paquete-price-value">$150</div>
+                  <div class="paquete-price-value" id="precio-mini-lunes">$150</div>
                 </div>
                 <div class="paquete-price">
                   <div class="paquete-price-label">Viernes a Domingo</div>
-                  <div class="paquete-price-value">$180</div>
+                  <div class="paquete-price-value" id="precio-mini-viernes">$180</div>
                 </div>
               </div>
             </div>
@@ -263,11 +264,11 @@
               <div class="paquete-footer">
                 <div class="paquete-price">
                   <div class="paquete-price-label">Lunes a Jueves</div>
-                  <div class="paquete-price-value">$200</div>
+                  <div class="paquete-price-value" id="precio-mediano-lunes">$200</div>
                 </div>
                 <div class="paquete-price">
                   <div class="paquete-price-label">Viernes a Domingo</div>
-                  <div class="paquete-price-value">$230</div>
+                  <div class="paquete-price-value" id="precio-mediano-viernes">$230</div>
                 </div>
               </div>
             </div>
@@ -309,11 +310,11 @@
               <div class="paquete-footer">
                 <div class="paquete-price">
                   <div class="paquete-price-label">Lunes a Jueves</div>
-                  <div class="paquete-price-value">$250</div>
+                  <div class="paquete-price-value" id="precio-full-lunes">$250</div>
                 </div>
                 <div class="paquete-price">
                   <div class="paquete-price-label">Viernes a Domingo</div>
-                  <div class="paquete-price-value">$280</div>
+                  <div class="paquete-price-value" id="precio-full-viernes">$280</div>
                 </div>
               </div>
             </div>
@@ -487,14 +488,14 @@
                   </select>
                 </div>
 
+
                 <div class="form-group full-width">
                   <label for="tipoEvento">Tipo de evento</label>
-                  <input
-                    type="text"
-                    id="tipoEvento"
-                    name="tipoEvento"
-                    placeholder="Cumpleaños, evento escolar, etc."
-                  />
+                  <select id="tipoEvento" name="tipoEvento" required>
+                    <option value="">Selecciona tipo de evento</option>
+                    <option value="Cumpleaños">Cumpleaños</option>
+                    <option value="Escolar">Escolar</option>
+                  </select>
                 </div>
               </div>
 
@@ -672,6 +673,15 @@
     <!-- Scripts utilizados en proyectos -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/pricing.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script>
+      // Inicializar precios dinámicos cuando se carga la página
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof inicializarPreciosDinamicos === 'function') {
+          inicializarPreciosDinamicos();
+        }
+      });
+    </script>
   </body>
 </html>

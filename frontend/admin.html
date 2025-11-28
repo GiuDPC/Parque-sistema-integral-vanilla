@@ -1,13 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png" />
     <title>Panel Administrativo - BRINCAPARK</title>
 
     <!-- CONEXION CSS -->
     <link rel="stylesheet" href="./assets/css/admin.css" />
+    <link rel="stylesheet" href="./assets/css/admin-mejoras.css" />
+    <link rel="stylesheet" href="./assets/css/admin-funcionalidades.css" />
+    <link rel="stylesheet" href="./assets/css/admin-analytics.css" />
   </head>
   <body>
     <!-- PARTE DE LOGIN -->
@@ -98,6 +102,23 @@
             </svg>
             <span>Reportes</span>
           </a>
+
+          <a href="#" class="nav-item" data-section="configuracion">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 1v6m0 6v6"></path>
+            </svg>
+            <span>Configuración</span>
+          </a>
+
           <a href="#" class="nav-item" id="logout-btn">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -117,6 +138,7 @@
         </nav>
       </aside>
 
+
       <!-- PAGINA PRINCIPAL DE INFORMACION DE DASHBOARD -->
       <main class="main-content">
         <!-- Header -->
@@ -134,8 +156,8 @@
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="22"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -148,7 +170,7 @@
               </svg>
               <span class="notification-badge" id="notification-count">0</span>
             </button>
-            <button id="refresh-btn" class="btn-refresh">
+            <button id="refresh-btn" class="btn-icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
@@ -157,6 +179,8 @@
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
                 <polyline points="23 4 23 10 17 10"></polyline>
                 <polyline points="1 20 1 14 7 14"></polyline>
@@ -164,14 +188,13 @@
                   d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
                 ></path>
               </svg>
-              Actualizar
             </button>
           </div>
         </header>
 
         <!-- SECCION DE INICIO DE DASHBOARD LA PARTE PRINCIPAL -->
         <div id="section-inicio" class="content-section">
-          <!-- CARDA DE ESTADISTICAS -->
+          <!-- CARTA DE LAS ESTADISTICAS -->
           <div class="stats-grid">
             <div class="stat-card stat-primary">
               <div class="stat-icon">
@@ -310,6 +333,36 @@
                 <canvas id="reservasChart"></canvas>
               </div>
             </div>
+
+            <!-- Gráfica de Ingresos Mensuales -->
+            <div class="widget-card" style="margin-top: 2rem;">
+              <div class="widget-header">
+                <h3>Ingresos por Mes (Últimos 6 Meses)</h3>
+              </div>
+              <div class="widget-body" style="height: 300px;">
+                <canvas id="ingresos-mensuales-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfica de Tipo de Evento -->
+            <div class="widget-card" style="margin-top: 2rem;">
+              <div class="widget-header">
+                <h3>Reservas por Tipo de Evento</h3>
+              </div>
+              <div class="widget-body" style="height: 300px;">
+                <canvas id="tipo-evento-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfica de Dona - Distribución por Parque -->
+            <div class="chart-container" style="margin-top: 2rem;">
+              <div class="chart-header">
+                <h2>Distribución de Reservas por Parque</h2>
+              </div>
+              <div class="chart-body">
+                <canvas id="parque-dona-chart"></canvas>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -318,16 +371,6 @@
           <div class="table-container">
             <div class="table-header">
               <h2>Gestión de Reservas</h2>
-<<<<<<< HEAD
-              <div class="table-filters">
-                <label for="filtro-parque">Filtrar por parque:</label>
-                <select id="filtro-parque" class="filter-select">
-                  <option value="">Todos los parques</option>
-                  <option value="Maracaibo">Maracaibo</option>
-                  <option value="Caracas">Caracas</option>
-                  <option value="Punto Fijo">Punto Fijo</option>
-                </select>
-=======
               
               <!-- BARRA DE BÚSQUEDA Y FILTROS MEJORADOS -->
               <div class="search-filters-container">
@@ -390,7 +433,6 @@
                 <div class="results-counter" id="results-counter">
                   Mostrando <strong id="results-count">0</strong> de <strong id="total-count">0</strong> reservas
                 </div>
->>>>>>> 5b36241 (feat: implementar sistema de búsqueda y filtros mejorados en panel admin)
               </div>
             </div>
             <div class="table-wrapper">
@@ -517,9 +559,133 @@
                 </div>
               </div>
             </div>
+
+            <!-- Top Clientes Frecuentes -->
+            <div class="metrics-section" style="margin-top: 2rem;">
+              <h3>Top Clientes Frecuentes</h3>
+              <div id="top-clientes-container" class="top-clientes-wrapper">
+                <p>Cargando datos...</p>
+              </div>
+            </div>
+
+            <!-- Análisis de Cancelaciones -->
+            <div class="metrics-section" style="margin-top: 2rem;">
+              <h3>Análisis de Cancelaciones</h3>
+              <div id="analisis-cancelaciones-container" class="cancelaciones-wrapper">
+                <p>Cargando datos...</p>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- SECCION CONFIGURACION -->
+        <section id="section-configuracion" class="content-section hidden">
+          <div class="config-container">
+            <div class="config-header">
+              <h2>Configuración del Sistema</h2>
+              <p>Gestiona moneda, tasas y precios</p>
+            </div>
+            <div class="config-card">
+              <h3>Moneda y Tasa de Cambio</h3>
+              <div class="config-row">
+                <div class="config-group">
+                  <label for="moneda-select">Moneda Principal</label>
+                  <select id="moneda-select" class="config-input">
+                    <option value="USD">Dólares (USD)</option>
+                    <option value="BS">Bolívares (Bs)</option>
+                  </select>
+                </div>
+                <div class="config-group">
+                  <label for="tasa-bcv">Tasa BCV (Bs por USD)</label>
+                  <input type="number" id="tasa-bcv" class="config-input" placeholder="244.65" step="0.01" min="0" />
+                </div>
+              </div>
+            </div>
+            <div class="config-card">
+              <h3>Precios de Tickets</h3>
+              <div class="config-row">
+                <div class="config-group">
+                  <label for="ticket-15min">15 Minutos</label>
+                  <input type="number" id="ticket-15min" class="config-input" placeholder="6" step="0.01" min="0" />
+                </div>
+                <div class="config-group">
+                  <label for="ticket-30min">30 Minutos</label>
+                  <input type="number" id="ticket-30min" class="config-input" placeholder="9" step="0.01" min="0" />
+                </div>
+                <div class="config-group">
+                  <label for="ticket-60min">60 Minutos</label>
+                  <input type="number" id="ticket-60min" class="config-input" placeholder="10" step="0.01" min="0" />
+                </div>
+              </div>
+              <div class="config-row">
+                <div class="config-group">
+                  <label for="ticket-fullday">Full Day</label>
+                  <input type="number" id="ticket-fullday" class="config-input" placeholder="11" step="0.01" min="0" />
+                </div>
+                <div class="config-group">
+                  <label for="ticket-combo">Combo Full Day</label>
+                  <input type="number" id="ticket-combo" class="config-input" placeholder="13" step="0.01" min="0" />
+                </div>
+              </div>
+            </div>
+            <div class="config-card">
+              <h3>Precios de Paquetes de Fiesta</h3>
+              <div class="paquete-config">
+                <h4>Paquete Mini (30 personas)</h4>
+                <div class="config-row">
+                  <div class="config-group">
+                    <label for="mini-lunes">Lunes a Jueves</label>
+                    <input type="number" id="mini-lunes" class="config-input" placeholder="150" step="1" min="0" />
+                  </div>
+                  <div class="config-group">
+                    <label for="mini-viernes">Viernes a Domingo</label>
+                    <input type="number" id="mini-viernes" class="config-input" placeholder="180" step="1" min="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="paquete-config">
+                <h4>Paquete Mediano (60 personas)</h4>
+                <div class="config-row">
+                  <div class="config-group">
+                    <label for="mediano-lunes">Lunes a Jueves</label>
+                    <input type="number" id="mediano-lunes" class="config-input" placeholder="200" step="1" min="0" />
+                  </div>
+                  <div class="config-group">
+                    <label for="mediano-viernes">Viernes a Domingo</label>
+                    <input type="number" id="mediano-viernes" class="config-input" placeholder="230" step="1" min="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="paquete-config">
+                <h4>Paquete Full (80 personas)</h4>
+                <div class="config-row">
+                  <div class="config-group">
+                    <label for="full-lunes">Lunes a Jueves</label>
+                    <input type="number" id="full-lunes" class="config-input" placeholder="250" step="1" min="0" />
+                  </div>
+                  <div class="config-group">
+                    <label for="full-viernes">Viernes a Domingo</label>
+                    <input type="number" id="full-viernes" class="config-input" placeholder="280" step="1" min="0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="config-actions">
+              <button id="guardar-config-btn" class="btn-save-config">Guardar Configuración</button>
+              <button id="reset-config-btn" class="btn-reset-config">Restaurar Valores Por Defecto</button>
+            </div>
+          </div>
+        </section>
       </main>
+    </div>
+
+    <!-- Panel de Notificaciones -->
+    <div class="notifications-panel hidden" id="notifications-panel">
+      <div class="notifications-header">
+        <h3>Notificaciones</h3>
+        <button class="close-notifications" id="close-notifications">×</button>
+      </div>
+      <div class="notifications-list" id="notifications-list"></div>
     </div>
 
     <!-- Scipts utilizados en proyectos y librerias externas -->
@@ -530,5 +696,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="./assets/js/api.js"></script>
     <script src="./assets/js/admin.js"></script>
+    <script src="./assets/js/admin-funcionalidades.js"></script>
+    <script src="./assets/js/admin-analytics.js"></script>
   </body>
 </html>

@@ -65,7 +65,16 @@ function cambiarSeccion(seccion) {
   document.getElementById(`section-${seccion}`)?.classList.remove("hidden");
 
   if (seccion === "reportes") {
-    setTimeout(() => renderAdvancedMetrics(), 100);
+    setTimeout(() => {
+      renderAdvancedMetrics();
+      // Renderizar top clientes y análisis de cancelaciones
+      if (typeof renderizarTopClientes === 'function') {
+        renderizarTopClientes();
+      }
+      if (typeof renderizarAnalisisCancelaciones === 'function') {
+        renderizarAnalisisCancelaciones();
+      }
+    }, 100);
   }
 }
 
@@ -242,6 +251,45 @@ function renderizarTodo() {
     console.error("Error en updateNotifications:", e);
   }
 
+  // Renderizar métricas adicionales si la función existe
+  try {
+    if (typeof renderizarMetricasAdicionales === 'function') {
+      renderizarMetricasAdicionales();
+      console.log("Métricas adicionales renderizadas");
+    }
+  } catch (e) {
+    console.error("Error en renderizarMetricasAdicionales:", e);
+  }
+
+  // Renderizar gráficas avanzadas si las funciones existen
+  try {
+    if (typeof renderizarGraficaIngresosMensuales === 'function') {
+      renderizarGraficaIngresosMensuales();
+      console.log("Gráfica de ingresos mensuales renderizada");
+    }
+  } catch (e) {
+    console.error("Error en renderizarGraficaIngresosMensuales:", e);
+  }
+
+  try {
+    if (typeof renderizarGraficaTipoEvento === 'function') {
+      renderizarGraficaTipoEvento();
+      console.log("Gráfica de tipo de evento renderizada");
+    }
+  } catch (e) {
+    console.error("Error en renderizarGraficaTipoEvento:", e);
+  }
+
+  // Renderizar gráfica de parques (dona) si la función existe
+  try {
+    if (typeof renderizarGraficaParques === 'function') {
+      renderizarGraficaParques();
+      console.log("Gráfica de parques renderizada");
+    }
+  } catch (e) {
+    console.error("Error en renderizarGraficaParques:", e);
+  }
+
   console.log("Dashboard renderizado completamente");
 }
 
@@ -273,21 +321,6 @@ function renderStats() {
 }
 
 /**
-<<<<<<< HEAD
- * Renderizar tabla de reservas en el dashboard
- */
-function renderTable() {
-  const filtro = document.getElementById("filtro-parque")?.value || "";
-  const tbody = document.querySelector("#tabla-reservas tbody");
-  if (!tbody) return;
-
-  tbody.innerHTML = "";
-
-  const reservasFiltradas = reservas.filter(
-    (r) => !filtro || r.parque === filtro
-  );
-
-=======
  * Renderizar tabla de reservas en el dashboard con búsqueda y filtros mejorados
  */
 function renderTable() {
@@ -343,7 +376,7 @@ function renderTable() {
   updateResultsCounter(reservasFiltradas.length, reservas.length);
 
   // Mostrar mensaje si no hay resultados
->>>>>>> 5b36241 (feat: implementar sistema de búsqueda y filtros mejorados en panel admin)
+
   if (reservasFiltradas.length === 0) {
     tbody.innerHTML = `
       <tr>
@@ -351,11 +384,7 @@ function renderTable() {
           ${
             reservas.length === 0
               ? "No hay reservas registradas"
-<<<<<<< HEAD
-              : "No hay reservas para este filtro"
-=======
               : "No se encontraron reservas con los filtros aplicados"
->>>>>>> 5b36241 (feat: implementar sistema de búsqueda y filtros mejorados en panel admin)
           }
         </td>
       </tr>
@@ -363,10 +392,7 @@ function renderTable() {
     return;
   }
 
-<<<<<<< HEAD
-=======
   // Renderizar filas
->>>>>>> 5b36241 (feat: implementar sistema de búsqueda y filtros mejorados en panel admin)
   reservasFiltradas.forEach((r) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -417,8 +443,6 @@ function renderTable() {
 }
 
 /**
-<<<<<<< HEAD
-=======
  * Actualizar contador de resultados
  */
 function updateResultsCounter(filtered, total) {
@@ -448,9 +472,7 @@ function clearAllFilters() {
   renderTable();
 }
 
-
 /**
->>>>>>> 5b36241 (feat: implementar sistema de búsqueda y filtros mejorados en panel admin)
  * Atachar listeners de la tabla
  */
 function attachTableEventListeners() {
@@ -657,15 +679,6 @@ function attachTableEventListeners() {
     });
   });
 
-<<<<<<< HEAD
-  // Filtro
-  const filtroSelect = document.getElementById("filtro-parque");
-  if (filtroSelect) {
-    filtroSelect.onchange = renderTable;
-  }
-}
-
-=======
   // Event listeners para búsqueda y filtros (solo añadir una vez)
   const searchInput = document.getElementById("search-input");
   const filtroParque = document.getElementById("filtro-parque");
@@ -706,8 +719,6 @@ function attachTableEventListeners() {
   }
 }
 
-
->>>>>>> 5b36241 (feat: implementar sistema de búsqueda y filtros mejorados en panel admin)
 /**
  * Renderizar gráfica principal de reservas
  */
@@ -1094,3 +1105,17 @@ function renderParksComparison() {
 // Funciones globales
 window.changeMonth = changeMonth;
 window.showDayReservations = showDayReservations;
+
+// Integración con funcionalidades finales
+// Llamar a actualizar notificaciones y renderizar gráfica cuando se cargan datos
+if (typeof actualizarContadorNotificaciones === 'function') {
+  // Actualizar notificaciones cada vez que se renderizan datos
+  const renderizarTodoOriginal = window.renderizarTodo || renderizarTodo;
+  window.renderizarTodo = function() {
+    if (renderizarTodoOriginal) renderizarTodoOriginal();
+    actualizarContadorNotificaciones();
+    if (typeof renderizarGraficaParques === 'function') {
+      renderizarGraficaParques();
+    }
+  };
+}
