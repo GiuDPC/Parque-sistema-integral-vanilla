@@ -93,6 +93,16 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // Validación de teléfono venezolano (11 dígitos)
+      const telefonoLimpio = datos.telefono.replace(/\D/g, ''); // Remover no-dígitos
+      if (telefonoLimpio.length !== 11) {
+        mostrarMensaje(
+          "El número de teléfono debe tener 11 dígitos (ejemplo: 04246888923)",
+          "error"
+        );
+        return;
+      }
+
       // Deshabilitar botón mientras se envía
       const submitBtn = form.querySelector('button[type="submit"]');
       const textoOriginal = submitBtn.textContent;

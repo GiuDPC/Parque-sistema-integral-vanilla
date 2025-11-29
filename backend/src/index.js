@@ -1,17 +1,14 @@
 ﻿/**
- * ============================================
  * BRINCAPARK - Servidor Backend Principal
- * ============================================
- * 
- * Este es el punto de entrada de nuestra API. Aquí configuramos Express,
- * conectamos a MongoDB y montamos todas las rutas de la aplicación.
- * 
- * Flujo de inicio:
- * 1. Cargar variables de entorno (.env)
- * 2. Configurar middlewares (JSON parser, CORS)
- * 3. Montar rutas de la API
- * 4. Conectar a MongoDB
- * 5. Iniciar servidor HTTP
+  Este es el punto de entrada de nuestra API. Aquí configuramos Express,
+  conectamos a MongoDB y montamos todas las rutas de la aplicación.
+ 
+ Flujo de inicio:
+  1. Cargar variables de entorno (.env)
+  2. Configurar middlewares (JSON parser, CORS)
+  3. Montar rutas de la API
+  4. Conectar a MongoDB
+  5. Iniciar servidor HTTP
  */
 
 // Primero cargamos las variables de entorno del archivo .env
@@ -64,7 +61,7 @@ app.use("/api/config", configRoute);              // Ej: GET /api/config, PUT /a
 // ============================================
 // Ruta simple para verificar que el servidor está funcionando
 // Útil para monitoreo y debugging
-app.get("/", (req, res) => res.send("Backend BRINCAPARK - funcionando ✅"));
+app.get("/", (req, res) => res.send("Backend BRINCAPARK - funcionando"));
 
 // ============================================
 // INICIAR SERVIDOR
@@ -80,12 +77,12 @@ const PORT = process.env.PORT || 4000;
     
     // Una vez conectados a la BD, iniciamos el servidor HTTP
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-      console.log(`📚 Documentación: http://localhost:${PORT}/api`);
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+      console.log(`Documentación: http://localhost:${PORT}/api`);
     });
   } catch (err) {
     // Si algo sale mal (generalmente la conexión a MongoDB), mostramos el error
-    console.error("❌ Error iniciando servidor:", err);
+    console.error("Error iniciando servidor:", err);
     // Salimos del proceso con código 1 (indica error)
     // Esto es importante para que servicios como PM2 o Docker sepan que algo falló
     process.exit(1);

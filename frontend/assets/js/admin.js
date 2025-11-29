@@ -213,11 +213,11 @@ async function cargarReservas() {
 /**
  * Renderizar todo el dashboard
  */
-function renderizarTodo() {
+async function renderizarTodo() {
   console.log("Renderizando dashboard con", reservas.length, "reservas");
 
   try {
-    renderStats();
+    await renderStats();
     console.log("Stats renderizadas");
   } catch (e) {
     console.error("Error en renderStats:", e);
@@ -296,25 +296,37 @@ function renderizarTodo() {
 /**
  * Renderizar estadísticas
  */
-function renderStats() {
+async function renderStats() {
   const total = reservas.length;
-  let dinero = 0,
-    maracaibo = 0,
+  let maracaibo = 0,
     caracas = 0,
     puntofijo = 0;
 
+  // Contar reservas por parque
   reservas.forEach((r) => {
-    if (r.paquete === "mini") dinero += 165;
-    else if (r.paquete === "mediano") dinero += 215;
-    else if (r.paquete === "full") dinero += 265;
-
     if (r.parque === "Maracaibo") maracaibo++;
     if (r.parque === "Caracas") caracas++;
     if (r.parque === "Punto Fijo") puntofijo++;
   });
 
+  // Obtener ingresos correctos del backend (calcula según día de semana y config)
+  let dinero = 0;
+  let moneda = "$";
+  try {
+    const res = await fetch("http://localhost:4000/api/reservations/analytics/stats", {
+      headers: { "x-admin-secret": adminSecret },
+    });
+    if (res.ok) {
+      const stats = await res.json();
+      dinero = stats.ingresoTotal || 0;
+      moneda = stats.moneda === "BS" ? "Bs" : "$";
+    }
+  } catch (err) {
+    console.error("Error obteniendo estadísticas:", err);
+  }
+
   document.getElementById("total-reservas").textContent = total;
-  document.getElementById("total-dinero").textContent = `$${dinero}`;
+  document.getElementById("total-dinero").textContent = `${moneda}${dinero.toFixed(2)}`;
   document.getElementById("total-maracaibo").textContent = maracaibo;
   document.getElementById("total-caracas").textContent = caracas;
   document.getElementById("total-puntofijo").textContent = puntofijo;
@@ -664,7 +676,7 @@ function attachTableEventListeners() {
           );
           if (res.ok) {
             Swal.fire({
-              text: "✅ Reserva actualizada",
+              text: "Reserva actualizada",
               icon: "success",
               confirmButtonColor: "#7C3AED",
               timer: 1500,

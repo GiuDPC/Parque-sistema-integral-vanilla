@@ -254,8 +254,13 @@ router.get("/analytics/stats", async (req, res) => {
     
     reservasAprobadas.forEach(r => {
       const paquete = r.paquete;
-      const fecha = new Date(r.fechaServicio);
+      // Parsear fecha manualmente para evitar problemas de zona horaria
+      // Formato: "YYYY-MM-DD"
+      const [year, month, day] = r.fechaServicio.split('-').map(Number);
+      const fecha = new Date(year, month - 1, day); // month - 1 porque en JS los meses son 0-indexed
       const diaSemana = fecha.getDay(); // 0=domingo, 1=lunes, ..., 5=viernes, 6=sábado
+      // Viernes (5), Sábado (6), Domingo (0) = fin de semana
+      // Lunes (1) a Jueves (4) = día de semana
       const esFinDeSemana = diaSemana === 0 || diaSemana === 5 || diaSemana === 6;
 
       let precio = 0;
@@ -377,8 +382,11 @@ router.get("/analytics/monthly", async (req, res) => {
       let ingresoMes = 0;
       reservasMes.forEach(r => {
         const paquete = r.paquete;
-        const fechaR = new Date(r.fechaServicio);
+        // Parsear fecha manualmente para evitar problemas de zona horaria
+        const [year, month, day] = r.fechaServicio.split('-').map(Number);
+        const fechaR = new Date(year, month - 1, day);
         const diaSemana = fechaR.getDay();
+        // Viernes (5), Sábado (6), Domingo (0) = fin de semana
         const esFinDeSemana = diaSemana === 0 || diaSemana === 5 || diaSemana === 6;
 
         let precio = 0;

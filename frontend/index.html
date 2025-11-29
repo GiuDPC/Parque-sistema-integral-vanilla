@@ -448,7 +448,16 @@
 
                 <div class="form-group">
                   <label for="phone">Telefono de contacto</label>
-                  <input type="tel" id="phone" name="phone" required />
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    required 
+                    pattern="[0-9]{11}"
+                    placeholder="04246888923"
+                    maxlength="11"
+                    title="Ingresa 11 dígitos (ejemplo: 04246888923)"
+                  />
                 </div>
 
                 <div class="form-group">

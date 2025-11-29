@@ -34,12 +34,12 @@ async function connectDB() {
       useUnifiedTopology: true,   // Usa el nuevo motor de gestión de conexiones
     });
     
-    console.log("✅ MongoDB conectado exitosamente");
-    console.log(`📦 Base de datos: ${mongoose.connection.name}`);
+    console.log("MongoDB conectado exitosamente");
+    console.log(`Base de datos: ${mongoose.connection.name}`);
   } catch (err) {
     // Si no podemos conectar a la BD, mostramos el error y salimos
     // No tiene sentido que el servidor funcione sin base de datos
-    console.error("❌ Error conectando a MongoDB:", err.message);
+    console.error("Error conectando a MongoDB:", err.message);
     process.exit(1); // Código 1 indica que hubo un error
   }
 }
